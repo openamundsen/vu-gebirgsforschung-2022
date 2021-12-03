@@ -41,8 +41,8 @@ output_data:
         agg: sum
 
       # SWE (daily)
-      - var: snow.swe
-        freq: D
+    #  - var: snow.swe
+    #    freq: D
 
   # Time series (point) outputs configuration
   timeseries:
