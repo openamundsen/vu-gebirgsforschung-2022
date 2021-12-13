@@ -1,7 +1,7 @@
 domain: rofental
-start_date: 2018-10-01
+start_date: 2019-10-01
 end_date: 2020-09-30
-resolution: 50 # spatial resolution (m)
+resolution: 100 # spatial resolution (m)
 timestep: 3H # temporal resolution as a pandas-compatible frequency string (e.g., "H", "3H", "D")
 crs: "epsg:32632" # CRS of the input grids
 timezone: 1 # timezone of the model domain (difference to UTC in h)
@@ -25,9 +25,10 @@ output_data:
     format: netcdf # output format (ascii, geotiff or netcdf)
     variables:
       # Temperature (monthly mean)
-      - var: meteo.temp
-        freq: M
-        agg: mean
+      - var: meteo.temp # internal variable name
+        name: temp_month # NetCDF output variable name
+        freq: M # write frequency (if not specified, write every timestep)
+        agg: mean # aggregation function ("sum", "mean" or empty)
 
       # Precipitation (monthly sum)
       - var: meteo.precip # internal variable name
@@ -41,8 +42,16 @@ output_data:
         agg: sum
 
       # SWE (daily)
-    #  - var: snow.swe
-    #    freq: D
+      - var: snow.swe
+        freq: D
+
+      - var: snow.depth
+        freq: D
+
+
+      - var: evapotranspiration.evapotranspiration
+        freq: M
+        agg: sum
 
   # Time series (point) outputs configuration
   timeseries:
@@ -57,8 +66,8 @@ output_data:
 #        y: 5192569
 
 #    add_default_variables: true
-#    variables:
-#      - var: surface.turbulent_exchange_coeff
+    variables:
+      - var: evapotranspiration.evapotranspiration
 
 meteo:
   # Spatial interpolation parameters
@@ -213,3 +222,6 @@ snow:
     threshold_temp: 273.15 # threshold temperature for the temperature index methods (K)
     degree_day_factor: 1.2 # degree day factor for the temperature index methods (kg m-2 d-1 K-1)
     albedo_factor: 0.1 # albedo factor for the enhanced temperature index method (m2 kg m-2 W-1 d-1)
+
+evapotranspiration:
+    enabled: true
