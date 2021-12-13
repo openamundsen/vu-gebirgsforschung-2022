@@ -41,7 +41,7 @@ output_data:
         freq: M
         agg: mean
 
-      # SWE (monthly mean)
+      # Snow depth (monthly mean)
       - var: snow.depth
         freq: M
         agg: mean
