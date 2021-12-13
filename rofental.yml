@@ -36,19 +36,29 @@ output_data:
         freq: M # write frequency (if not specified, write every timestep)
         agg: sum  # aggregation function ("sum", "mean" or empty)
 
+      # SWE (monthly mean)
+      - var: snow.swe
+        freq: M
+        agg: mean
+
+      # SWE (monthly mean)
+      - var: snow.depth
+        freq: M
+        agg: mean
+
       # Snowmelt (monthly sum)
       - var: snow.melt
         freq: M
         agg: sum
 
       # SWE (daily)
-      - var: snow.swe
-        freq: D
+      # - var: snow.swe
+      #   freq: D
+      #
+      # - var: snow.depth
+      #   freq: D
 
-      - var: snow.depth
-        freq: D
-
-
+      # Evapotranspiration (monthly sum)
       - var: evapotranspiration.evapotranspiration
         freq: M
         agg: sum
