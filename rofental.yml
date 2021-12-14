@@ -22,7 +22,7 @@ input_data:
 output_data:
   # Configuration for gridded outputs
   grids:
-    format: csv # output format (ascii, geotiff or netcdf)
+    format: netcdf # output format (ascii, geotiff or netcdf)
     variables:
       # Temperature (monthly mean)
       - var: meteo.temp # internal variable name
