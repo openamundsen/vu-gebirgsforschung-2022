@@ -2,7 +2,7 @@ domain: rofental
 start_date: 2019-10-01
 end_date: 2020-09-30
 resolution: 100 # spatial resolution (m)
-timestep: 3H # temporal resolution as a pandas-compatible frequency string (e.g., "H", "3H", "D")
+timestep: "3H" # temporal resolution as a pandas-compatible frequency string (e.g., "H", "3H", "D")
 crs: "epsg:32632" # CRS of the input grids
 timezone: 1 # timezone of the model domain (difference to UTC in h)
 results_dir: results/rofental # directory for storing the model outputs
@@ -22,7 +22,7 @@ input_data:
 output_data:
   # Configuration for gridded outputs
   grids:
-    format: netcdf # output format (ascii, geotiff or netcdf)
+    format: ascii # output format (ascii, geotiff or netcdf)
     variables:
       # Temperature (monthly mean)
       - var: meteo.temp # internal variable name
@@ -38,16 +38,33 @@ output_data:
 
       # SWE (monthly mean)
       - var: snow.swe
+        name: swe_month
         freq: M
         agg: mean
 
       # Snow depth (monthly mean)
       - var: snow.depth
+        name: snowdepth_month
         freq: M
         agg: mean
 
+      # SWE (certain dates)
+      - var: snow.swe
+        name: swe_dates
+        dates:
+        - 2020-04-11 12:00
+        - 2020-06-02 12:00
+
+      # Snow depth (certain dates)
+      - var: snow.depth
+        name: snowdepth_dates
+        dates:
+        - 2020-04-11 12:00
+        - 2020-06-02 12:00
+
       # Snowmelt (monthly sum)
       - var: snow.melt
+        name: snowmelt_month
         freq: M
         agg: sum
 
@@ -62,6 +79,7 @@ output_data:
       - var: evapotranspiration.evapotranspiration
         freq: M
         agg: sum
+
 
   # Time series (point) outputs configuration
   timeseries:
@@ -148,10 +166,15 @@ meteo:
     temp_range: 1. # temperature range in which mixed precipitation can occur
 
   # Parameters for adjusting precipitation for wind-induced undercatch and snow redistribution
-  precipitation_correction:
-    - method: kochendorfer # use the Kochendorfer et al. (2017) transfer functions
-      gauge: us_un # gauge-specific transfer function to use according to Kochendorfer et al. (2017, Table 3)
-    - method: srf # apply an additional precalculated spatially distributed snow redistribution factor (SRF)
+  #precipitation_correction:
+    #- method: constant_scf
+    #  scf: 1.25
+    #- method: kochendorfer # use the Kochendorfer et al. (2017) transfer functions
+    #  gauge: us_un # gauge-specific transfer function to use according to Kochendorfer et al. (2017, Table 3)
+    #- method: wmo
+    #  gauge: hellmann
+
+    #- method: srf # apply an additional precalculated spatially distributed snow redistribution factor (SRF)
 
   # Radiation parameters
   radiation:
