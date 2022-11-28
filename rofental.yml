@@ -13,8 +13,8 @@ input_data:
     dir: data/rofental # location of the input grids (DEM, ROI etc.)
 
   meteo:
-    dir: data/rofental/meteo/ # location of the meteorological input data
-    format: netcdf # input format (csv or netcdf)
+    dir: data/rofental/meteo/csv # location of the meteorological input data
+    format: csv # input format (csv or netcdf)
     #crs: "epsg:32632" # CRS of the station coordinates (when using CSV format)
 
 
