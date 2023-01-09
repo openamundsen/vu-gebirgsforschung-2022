@@ -1,6 +1,6 @@
 domain: rofental
-start_date: 2019-10-01
-end_date: 2020-09-30
+start_date: 2019-01-01
+end_date: 2022-12-31
 resolution: 100 # spatial resolution (m)
 timestep: "3H" # temporal resolution as a pandas-compatible frequency string (e.g., "H", "3H", "D")
 crs: "epsg:32632" # CRS of the input grids
@@ -13,8 +13,8 @@ input_data:
     dir: data/rofental # location of the input grids (DEM, ROI etc.)
 
   meteo:
-    dir: data/rofental/meteo/nc # location of the meteorological input data
-    format: netcdf # input format (csv or netcdf)
+    dir: data/rofental/meteo/csv # location of the meteorological input data
+    format: csv # input format (csv or netcdf)
     #crs: "epsg:32632" # CRS of the station coordinates (when using CSV format)
     bounds: grid
     aggregate_when_downsampling: false
@@ -24,7 +24,7 @@ input_data:
 output_data:
   # Configuration for gridded outputs
   grids:
-    format: ascii # output format (ascii, geotiff or netcdf)
+    format: netcdf # output format (ascii, geotiff or netcdf)
     variables:
       # Temperature (monthly mean)
       - var: meteo.temp # internal variable name
@@ -65,10 +65,10 @@ output_data:
         - 2020-06-02 12:00
 
       # Snowmelt (monthly sum)
-      - var: snow.melt
-        name: snowmelt_month
-        freq: M
-        agg: sum
+      # - var: snow.melt
+      #   name: snowmelt_month
+      #   freq: M
+      #   agg: sum
 
       # SWE (daily)
       # - var: snow.swe
@@ -78,36 +78,36 @@ output_data:
       #   freq: D
 
       # Evapotranspiration (monthly sum)
-      - var: evapotranspiration.evapotranspiration
-        freq: M
-        agg: sum
+      # - var: evapotranspiration.evapotranspiration
+      #   freq: M
+      #   agg: sum
 
       # - var: snow.sublimation
       #   freq: M
       #   agg: sum
 
-      - var: snow.canopy_sublimation
-        freq: M
-        agg: sum
+      # - var: snow.canopy_sublimation
+      #   freq: M
+      #   agg: sum
 
-      - var: meteo.temp
-        freq: D
-        agg: mean
-      - var: meteo.precip
-        freq: D
-        agg: sum
-      - var: meteo.rel_hum
-        freq: D
-        agg: mean
-      - var: meteo.sw_in
-        freq: D
-        agg: mean
-      - var: meteo.lw_in
-        freq: D
-        agg: mean
-      - var: meteo.wind_speed
-        freq: D
-        agg: mean
+      # - var: meteo.temp
+      #   freq: D
+      #   agg: mean
+      # - var: meteo.precip
+      #   freq: D
+      #   agg: sum
+      # - var: meteo.rel_hum
+      #   freq: D
+      #   agg: mean
+      # - var: meteo.sw_in
+      #   freq: D
+      #   agg: mean
+      # - var: meteo.lw_in
+      #   freq: D
+      #   agg: mean
+      # - var: meteo.wind_speed
+      #   freq: D
+      #   agg: mean
 
   # Time series (point) outputs configuration
   timeseries:
@@ -124,9 +124,9 @@ output_data:
 #      - x: 637235
 #        y: 5192569
 
-    variables:
-      - var: evapotranspiration.evapotranspiration
-      - var: surface.turbulent_exchange_coeff
+    # variables:
+    #   - var: evapotranspiration.evapotranspiration
+    #   - var: surface.turbulent_exchange_coeff
 
 meteo:
   # Spatial interpolation parameters
@@ -205,7 +205,6 @@ meteo:
     #  gauge: us_un # gauge-specific transfer function to use according to Kochendorfer et al. (2017, Table 3)
     - method: wmo
       gauge: hellmann
-
     #- method: srf # apply an additional precalculated spatially distributed snow redistribution factor (SRF)
 
   # Radiation parameters
@@ -229,7 +228,7 @@ meteo:
 
 # Snow parameters
 snow:
-  model: multilayer # snow scheme (multilayer or cryolayers)
+  model: cryolayers # snow scheme (multilayer or cryolayers)
   thermal_conductivity: 0.24 # snow thermal conductivity (W m-1 K-1)
   roughness_length: 0.01 # roughness length of snow-covered ground (m)
   measurement_height_adjustment: false # adjust the temperature measurement height for snow depth
@@ -297,7 +296,7 @@ soil: # Soil parameters for FSM soil module (not used for FAO evapotranspiration
   albedo: 0.15
 
 canopy:
-  enabled: true
+  enabled: false
   extinction_coefficient: 0.71
   temperature_scaling_coefficient: 0.8
   canopy_flow_index_coefficient: 0.9
@@ -308,7 +307,7 @@ canopy:
   degree_day_factor: 5.
 
 evapotranspiration:
-  enabled: true
+  enabled: false
   min_crop_coefficient: 0.175
   grass_albedo: 0.23
   grass_emissivity: 0.985
@@ -522,7 +521,7 @@ land_cover:
       depletion_fraction: 0.6
 
 liveview:
-  enabled: true
+  enabled: false
   cols: 5
   width: 1200
   height: 800
